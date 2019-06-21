@@ -42,7 +42,9 @@ __app__ directory 에서 내가 관리할 file은
 
 `views.py` 와 `urls.py`이다.
 
-`urls.py`는 tutorial directory `urls.py`와 같은 형식으로 참고해서 적어주자.
+`urls.py`는 내가 새로 만들어야하는 파일이다. tutorial directory `urls.py`와 같은 형식으로 참고해서 적어주자
+
+이 때의 root 경로는 내가 나중에 tutorial directory의 `urls.py` 에서 설정하기 나름이다. 만약에 `blog/` 다음의 router들을 생성하고 있다면, tutorial/urls.py에서 `"blog/"` 에 대한 view function에 indclude("appOne.urls") 이런 식으로 정의해주면. 알아서 appOne/urls.py의 경로가 `blog/` 
 
 `views.py` 가 비로소 드디어 client가 해당 url에 접속했을 때 수행할 view functions를 정의하는 공간이다.
 
