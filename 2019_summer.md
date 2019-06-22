@@ -48,4 +48,50 @@ __app__ directory 에서 내가 관리할 file은
 
 `views.py` 가 비로소 드디어 client가 해당 url에 접속했을 때 수행할 view functions를 정의하는 공간이다.
 
-django.http의 HttpResponse모듈을 이용한
+django.http의 HttpResponse모듈을 이용해 client에게 response를 전달한다.
+
+## 20190622
+
+### 요약
+
+smtplib 모듈을 이용해 email을 보내봤다. 자세히는 아직 다루지 못했지만, 작동은 한다.
+
+패키지에 대한 이해가 조금 필요할 듯하다. 그냥 간단하게 조금 확인해보고싶어서 temp.py 등으로 임의로 테스트 해보려는데 패키지가 아니면 모듈을 이용할 수 없다는둥 이래저래 오류가 많이 뜨더라.
+
+Template을 이용해 html file을 정의하는 법에 조금 익숙해졌다. `base.html`을 만들어 `guestbook.html`이 상속받을 수 있게 설계했다.
+
+SQLite3 DB를 이용하는 법을 배웠다.
+
+### 설명
+
+How to use SQLite 
+
+자신의 app의 디렉토리에 있는 models.py로 가준다.
+
+![0622_model](0622_model.png)
+
+이런 식으로 적절히 django.db의 models.Model 클래스를 상속받는 나의 데이터 model 클래스를 정의한다.
+
+app의 모델을 정의했으면 `manage.py`가 있는 프로젝트의 root directory로 가서 
+
+`python manage.py makemigrations blogApp`  을 통해 blogApp의 db model을 다시 만들어주고
+
+`python manage.py migrate blogApp`  을 통해 내 프로젝트의 db에 적용해준다.
+
+#### 기타 template 사용법
+in base.html
+
+`{% block content %}
+
+{% endblock content %}`
+
+in guestbook.html ( 예를들어 )
+
+`{% extends "blogApp/base.html" %}
+
+{% block content %}
+
+추가하고픈 내용
+
+{% endblock content %}`
+
