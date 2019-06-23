@@ -62,13 +62,13 @@ Template을 이용해 html file을 정의하는 법에 조금 익숙해졌다. `
 
 SQLite3 DB를 이용하는 법을 배웠다.
 
-### 설명
+### 내용
 
-How to use SQLite 
+#### How to use SQLite 
 
 자신의 app의 디렉토리에 있는 models.py로 가준다.
 
-![0622_model](0622_model.png)
+![0622_model](imgs/0622_model.png)
 
 이런 식으로 적절히 django.db의 models.Model 클래스를 상속받는 나의 데이터 model 클래스를 정의한다.
 
@@ -78,20 +78,101 @@ app의 모델을 정의했으면 `manage.py`가 있는 프로젝트의 root dire
 
 `python manage.py migrate blogApp`  을 통해 내 프로젝트의 db에 적용해준다.
 
+
+
 #### 기타 template 사용법
 in base.html
 
-`{% block content %}
-
-{% endblock content %}`
+    {% block content %}
+    {% endblock content %}
 
 in guestbook.html ( 예를들어 )
 
-`{% extends "blogApp/base.html" %}
+    {% extends "blogApp/base.html" %}
+    {% block content %}
+    추가하고픈 내용
+    {% endblock content %}
 
-{% block content %}
 
-추가하고픈 내용
+## 20190623
 
-{% endblock content %}`
+### 요약
 
+django 에서 DB를 다루는 법을 좀 더 알 게 되었다.
+
+POST 로 전달받은 Guestbook 내용을 통해 DB에 정보를 추가할 수 있어졌다.
+
+Bootstrap 의 Grid Layout에 대해 좀 더 감이 잡혔다.
+
+template에 인자를 전달하고 사용해보았다.
+
+### 내용
+
+#### DB 다루는법
+
+나의 Django Projcet의 DBShell을 이용하려면 ( 나의 경우 SQLite3 )
+
+`python manage.py dbshell` or 
+
+```
+$ sqlite3
+$ .open {DB File Name} 
+```
+
+을 통해 가능하다.
+
+참고로 sqlite3 shell을 이용하고 싶다면 따로 설치해주어야하고.
+
+```
+python manage.py shell
+>>> from {app name.models} import {modelName}
+>>> {modelName}.objects.all()
+>>> {modelName}.objects.filter(name="test").delte()
+```
+
+등으로도 DB를 관리할 수 있다.
+
+
+
+#### Django Query
+
+view function이 인자로 받는 request를 이용해
+
+`request.POST.get("이름")` or `request.GET.get("이름")` or `request.GET["이름"]` 등등으로 query data를 얻을 수 있다.
+
+
+
+#### template에 인자 전달하기
+
+in view function definition
+
+```
+dataObject={"articles":Article.objects.all()}
+return render(request, "blogApp/guestbook.html", dataObject)
+```
+
+위와같이 QuerySet을 다시 dictionary 등에 대입하여 전달한다.
+
+
+
+#### Bootstrap Grid
+
+row는 margin -15px
+
+col은 padding +15px
+
+container -> row -> col 순으로 배열해야하는데
+
+row 전에는 한 번이라도 container가 와야 깔끔히 사용가능하고 그 이후엔
+
+row->col만 써도 깔끔. 계속 container->row->col 식으로 사용하면 점점 좁아짐.
+
+
+
+#### 보완할 점 및 궁금한 점
+
+html file의 structure가 좀 더러워서 bootstrap도 좀 더 개념을 잡으면서 정리해보고 싶긴한데, front 보단 backend에 더 관심이 많아서 일단 보류함.
+
+POST request에 대해 response를 보낼 때 view function에 decorator로 @csrf_exempt  이걸 적던데, 왜 쓰는 건지...?
+
+guestbook delete는 구현헀는데, guestbook modify는 새로 수정창을 열어야해서 어떻게 구현할 지 고민 중..
