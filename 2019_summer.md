@@ -132,6 +132,14 @@ python manage.py shell
 
 등으로도 DB를 관리할 수 있다.
 
+`python manage.py sqlmigrate {appName} {migrateNumber}`
+
+을 통해 SQL language로 해당 migration을 할 때 어떤 작업을 수행하는 지 볼 수 있다
+
+
+
+
+
 
 
 #### Django Query
@@ -176,3 +184,38 @@ html file의 structure가 좀 더러워서 bootstrap도 좀 더 개념을 잡으
 POST request에 대해 response를 보낼 때 view function에 decorator로 @csrf_exempt  이걸 적던데, 왜 쓰는 건지...?
 
 guestbook delete는 구현헀는데, guestbook modify는 새로 수정창을 열어야해서 어떻게 구현할 지 고민 중..
+
+
+
+## 20190624
+
+### 요약
+
+aws ec2 instance를 이용해 server을 돌렸다.
+
+
+
+### 설명
+
+#### EC2 Instance로 서버돌리기
+
+포트와 아이피가 어떤 식으로 바인딩되는 지에 대한 이해가 있어야 명확히 서버를 돌리고 포트를 바인딩 하는 원리를 알 수 있다.
+
+우선은 nohup을 통해 background 에서 detach mode로 python을 실행시킬 수 있었다.
+
+ex) `nohup python manage.py runserver 0:80`
+
+#### 시간 이용하기
+
+models.py 에서 `from django.utils import timezone`과
+
+테이블의 요소로서 `time=models.DateTimeField(default=timezone.now)`로 함수의 리턴값이 아닌 now라는 함수 자체를 default의 값으로 전달한다.
+
+이후 template에서는 [Django date filter](https://docs.djangoproject.com/en/2.2/ref/templates/builtins/#date) 참고하여 time및date를 이용할 수 있다. ex) `{{ article.time|date:"Y.m.d. H:i" }}`
+
+
+
+
+
+
+
