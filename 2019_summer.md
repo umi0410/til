@@ -385,3 +385,113 @@ Bootstrap 보단 Django에서 어떤 식으로 App을 디자인하지는 지에 
 
 
 
+## 20190701
+
+### 요약
+
+전에 아쉬운 점이라고 적었던 대로 url을 하드코딩 보단 변수를 통해 전달하는 방식을 이용해보았다.
+
+이를 통해 url namespace를 나누었고 viewfunction의 이름 또한 깔끔히 다시 정리함.
+
+reply delete 기능을 구현했다
+
+password 인증을 추가했다.
+
+
+
+### 내용
+
+#### How to set url namespace
+
+urls.py 에서
+
+ `path("replytest/", include(('reply.urls','reply'), namespace="reply"))`  이와 같은 식으로 namespace를 정해준다.
+
+[출처 stackoverflow](https://stackoverflow.com/questions/51818007/django-social-django-specifying-a-namespace-in-include-without-providing-an-a)
+
+
+
+#### url with parameters
+
+만약 variable을 이용하는 url일 경우 그 variable이 적용된 url을 설정하고싶다면
+
+ex) in `urls.py` of an app
+
+```
+urlpatterns=[
+	...
+	path('create/<int:articleId>', views.replyCreate, name="replyCreate"),
+	...
+]
+```
+
+in some htmlfile of another app
+
+```
+{% url 'reply:replyCreate' 14 %}
+```
+
+이런 식으로 전달하면 articleId가 14인 reply:replyCreate이라는 이름의 url을 보여준다.
+
+또한 만약 view function에서 template에게 article id를 넘겨준다면 그것을 이용할 수도 있다.
+
+ex ) `{% url 'reply:replyCreate' article.id %}` 어떤 변수를 view function에서 넘겨주는 지는 상황마다 다름. 예시일 뿐.
+
+또한 template 의 변수를 어느 영역에서 까지 쓸 수 있나 싶었는데
+
+```
+replyid=self.parentElement.getAttribute("replyid")
+$.post({
+url: "{% url 'reply:delete' article.id %}",
+ ...
+```
+
+이렇게 js 안에서도 쓸 수 있는 것을 보아 어디서든 문자열 자체로 바뀌어 쓸 수 있는 것 같다.
+
+js variable을 url의 argument로 전달해야하는 경우. 예를 들어 var replyId=15 인데
+
+'delete/\<int:id\>' 이런 식의 url을 이용하고 싶은 경우
+
+`delete/<int:id>` 의 url 이외에 `delete/`라는 url을 따로 또 등록해주어서 거기에 js 변수를 append 하는 식으로 이용할 수도 있다.
+
+ex) `url= "{% url 'reply:delete_raw' %}"+replyid`  
+
+혹은
+
+[stackoverflow 참조](https://stackoverflow.com/questions/17832194/get-javascript-variables-value-in-django-url-template-tag)
+
+`url= "{% url 'reply:delete' 9999 %}".replace("9999", replyid),` 이런 식의 트릭을 이용할 수도 있다.
+
+
+
+#### 보완활 점
+
+이제 어느 정도 게시판을 가진 홈페이지의 기능정도는 구현했는데, 학교 형이랑 얘기해본 결과 Django 자체의 깊은 수준보다는 AWS services랑 잘 연결 시켜보라는 조언을 듣고 sqlite3 에서 aws DB로 바꾸어 이용해보는 방향을 생각 중.
+
+댓글도 article도 모두 password 가 일치해야 삭제, 수정되게 바꿔야한다. 약간 반복된 노가다..
+
+
+
+## 20190702~0704
+
+### 요약
+
+새로운 내용을 배웠다기 보다는 0701에 적었던 대로 article과 comment의 password가 일치할 때에만  수정. 삭제할 수 있도록 구현하는 중이다.
+
+
+
+### 내용
+
+특이한 내용 없이 그냥 post로 password와 article 및 content의 내용을 보내고,
+
+pw가 일치할 경우 Delete or Update 하는 식.
+
+
+
+### 아쉬운 점 및 보완할 점
+
+update, delete form 은 좀 허접하지만, 기본 HTML로 디자인했다. frontend를 깊이 공부하는 목적이 아니므로.
+
+View count를 적용하고 싶다. -> 그럼 DB model에서 CharField 말고 IntegerField 이런 것도 있나? 있겠지?
+
+미니멀한 디자인으로라도 admin 페이지를 구성해보고싶긴함.

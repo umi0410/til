@@ -7,6 +7,8 @@ Today I Learned
 
 * DB 공부. mongoDB나 mySQL 계획 중.
 
+  이었는데 Django 에서 Default로 이용하는 sqlite3 이용중
+
 * KHLUG 보안 스터디
 
 * 블로그 -> Github Page를 새로 시도해볼 지 Tistory를 그대로 이용할 지 고민중.
