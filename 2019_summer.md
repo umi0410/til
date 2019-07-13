@@ -495,3 +495,123 @@ update, delete form 은 좀 허접하지만, 기본 HTML로 디자인했다. fro
 View count를 적용하고 싶다. -> 그럼 DB model에서 CharField 말고 IntegerField 이런 것도 있나? 있겠지?
 
 미니멀한 디자인으로라도 admin 페이지를 구성해보고싶긴함.
+
+사진이나 동영상, 첨부파일 업로드도 다루어보고싶다. nodejs에서 다루었던 youtube playlist 다운로드를 할 수 있게 하면 재밌을듯.
+
+[class view video](https://www.youtube.com/watch?v=-s7e_Fy6NRU&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=10) 에 나온 개념을 이용해서 Article view를 이용해보고싶음.
+
+
+
+## 20190705
+
+### 요약
+
+Django의 Class Based View를 이용해보았다.
+
+Article List를 나타낼 때는 ListView를 상속받아 as_view()를 이용해 구현했고, create page는 따로 분리시켰다.
+
+자기 자신을 primary key 로 갖는 model들을 얻을 수 있다.
+
+
+
+### 내용
+
+#### class view 써보니까 어떤가
+
+class어제 적었던 대로 class based view를 이용해보았는데, 왜 Django가 기본적으로 제공하는 걸로 빠르고 편리하게 만들 수는 있지만, 자기 입맛에 맞춰 구성하기는 적절하지 않을 수 있다는 지 알 것 같다.
+
+ListView를 이용하든 Detail View를 이용하든, 그것의 기본 용도에 맞춰 쓰기는 편리한데, 섞어서 쓰기는 좀... 그러니까 섞어서 쓰기에는 굳이 이용할 필요가 없음. 그냥 안 쓰는 거랑 비슷. 몇 줄 줄이자고, 새로운 개념을 도입하는 느낌이랄까.
+
+ListView를 이용하는 경우는 DataBase의 **Data를 알아서 pagination 을 해준다는 장점**은 있는 것 같다.
+
+
+
+#### 자신을 primary key로 갖는 query set 얻기
+
+예를 들어 Article model이 있고 그 Article model을 primary key로 갖는 Comment model들이 있다고 가정하자.
+
+첫 번째 Article의 Comment 개수를 얻고싶다면
+
+in python
+
+```
+article=Article.objects.all()[0]
+# print(dir(article)) # 로 목록은 확인 가능.
+comments=article.comment_set()
+print(comment.count())
+```
+
+이런 식으로 이용할 수 있고, django template 내에서는 한 Article 객체 변수를 article 이라고 한다면 `article.comment_set.count` 로 Comment 개수를 얻을 수 있다.
+
+![0707_subset.png](imgs/0705_subset.png)
+
+### 아쉬운 점, 보완할 점
+
+생각보다 Class Based View가 별로 편리한 지 모르겠어서 조금 아쉽다.
+
+음... blog 자체의 컨셉과는 딱히 필요없을 것 같긴한데, 파일이나 image 업로드 같은 부분이랑 Authentication 부분은 다뤄보긴해야할 것 같고, 이것만 다루면 Django에서 더 할만 한 내용은 딱히 없지 않나 싶다.
+
+
+
+## 20190706~0709
+
+### 요약
+
+요즘은 Django 보다는 동아리에서 진행하는 해킹/보안 스터디를 하느라 조금 바빴던 것 같다. 그래도 방학이라고 조금씩 놀러다니기도 했고 ㅎㅎ
+
+주로 웹해킹에 관심이 많았는데 ,XSS나 SQL injection 위주로 배웠고, webhacking.kr 을 이용해 문제를 조금 풀어보기도 했다. 원래 방학 때 DB를 배우면서 MySQL이나 mongoDB를 이용해보려했는데, SQL Injection을 공부하다보니 자연스레 SQL문에는 익숙해진 것 같다.
+
+
+
+### 내용
+
+연습단계에서 XSS를 이용해 효과를 보는 것은 사실상 쉽지 않았다. javascript 삽입 자체는 성공했다할지라도 뭔가를 누려보기 위해선 조건이 많이 받쳐줘야했기때문.
+
+그래서 XSS보단 SQL Injection에 관심이 더 가기는 했지만, SQL injection의 경우 내가 볼 땐 주로 php를 이용한 페이지에서 sql문을 다룰 때 사용할 수 있는 것 같은데, 이런 legacy based 웹 말고 Django 나 Flask 등으로 짜여진 modern web에서도 SQL injection이 먹히는 지 의문이다. 아마 거의 먹히지 않는 걸로 알고있다. php에서 이용하던 SQL 문에서 문자열에 장난을 치는 방식을 요즘은 parameter로 정보를 전달하는 형식으로 고쳤다는 것 같았음. 근데 확실하지는 않음.
+
+
+
+#### SQL Injection
+
+```
+$query="SELECT id, name FROM users WHERE id='$id' LIMIT 1";
+$result=mysql_query(query);
+```
+
+이러한  php source가 있다면 내가 $id에 문자열로서 '  or 1=1; -- 이러한 방식으로 전달한다면
+
+```
+$query="SELECT id, name FROM users WHERE id='' or 1=1;--
+$result=mysql_query(query);
+```
+
+과 같은 결과를 얻어 모든 user의 정보를 얻을 수 있게되는 것이다.
+
+single quotation, 주석 등등에 대한 다양한 우회방법이 있지만 그러한 우회방법이 어떤 방식들인지만 알고 암기할 정도는 아닌 것 같다.
+
+
+
+#### SQL Injection - union
+
+union이란 SELECT 문 두개를 묶어주는 역할을 해주는 것인데, 이 때, 두 SELECT문이 선택하는 Column들의 개수가 같아야한다.
+
+`select id, name from users where id='$id' `를 SQL injection을 통해
+
+`select id, name from users where id='' and 1=0 union select id, pw from users;`
+
+이런 식으로 만들어주면 원래의 SQL 문에서 얻으려던 정보 이외의 것을 얻을 수도 있다.
+
+
+
+### 근황
+
+요즘 방학하고 이래저래 일도 많고 개인사정도 있어 공부를 제대로 진행은 못하고있다. 중순부턴 다시 조금씩 가다듬어 공부하고 여행도 다니고 해야겠다.
+
+
+
+## 20190710
+
+### 요약
+
+동아리에서 시스템해킹 관련하여 어셈블리어를 살짝 배웠는데, 이곳에 정리하긴 애매하여 생략한다.
+
