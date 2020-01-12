@@ -13,7 +13,7 @@ Today I Learned
 - Express 제대로 알고 사용하기, Express 외의 js web framework
 - mongoDB(NoSQL) vs SQL, mongoDB에 대하여.
 - CI/CD - travis, circle, Github Action, AWS Code Deploy, Code Pipeline, Jenkins
-- Test case - Jest, mocha, Jasmin
+- Test case - Jest, mocha, Jasmine
 - Docker 의 밑바닥을 다시 공부
 - Kubernetes 의 밑바닥을 다시 공부
 - Nginx, Apache 등의 웹서버 프로그램과 그 역할, 리눅스 명령어
@@ -41,4 +41,3 @@ Today I Learned
 * 블로그 -> Github Page를 새로 시도해볼 지 Tistory를 그대로 이용할 지 고민중.
   간단한 블로그를 만드는 것도 생각 중
   * 블로그는 간단하게 있던 Tistory 블로그를 이용하기로 함.
-
