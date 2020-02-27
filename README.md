@@ -1,33 +1,36 @@
 # Today I Learned
 Today I Learned
 
-## 2019 겨울방학
+## 언젠가 다뤄보고 싶은 주제
+
+* Kubernetes
+* CI/CD - AWS에 있는 서비스는 대부분 이용해봤는데, 그 외에도 몇 개 이용해보고는 싶음
+  travis, circle, Github Action, , Jenkins
+* Test case - Jest, mocha, Jasmine
+* Production 급에서 JS server을 돌리는 방식 - forever, pm2 등
+
+## 2019 겨울방학에 공부한 주제
 
 일주일에 한 토픽씩 공부해보고 남는 시간엔 개념이나 알고리즘 공부할 계획
 
-### 토픽
-
-- JS 의 작동원리 자세히, 클래스에 관하여, TypeScript
+- JS 의 작동원리 자세히, 클래스에 관하여, TypeScript 맛보기
 - REST vs GraphQL, What is RESTful
-- GraphQL과 GraphQL client인 Apollo 를 이용한 간단한 React App 만들어보기
-- Express 제대로 알고 사용하기, Express 외의 js web framework
+- Express 제대로 알고 사용하기, Express 외의 js web framework 
 - mongoDB(NoSQL) vs SQL, mongoDB에 대하여.
-- CI/CD - travis, circle, Github Action, AWS Code Deploy, Code Pipeline, Jenkins
-- Test case - Jest, mocha, Jasmine
-- Docker 의 밑바닥을 다시 공부
-- Kubernetes 의 밑바닥을 다시 공부
-- Nginx, Apache 등의 웹서버 프로그램과 그 역할, 리눅스 명령어
-
-### 개념
-
-- Http
-- RESTful
+- Docker 의 기초부터 다시 공부
+- docker-compopse를 통한 작업환경 구축
+- docker swarm 을 통한 container orchestration
+- AWS의 CI/CD 서비스들 - CodePipeline, CodeDeploy, CodeBuild 
+- AWS의 IAM Role과 IAM User의 개념과 활용
+- AWS ECS, ECR 개념 및 사용법
+- Nginx, Apache 등의 웹서버 프로그램과 그 역할, WAS vs Web server 리눅스 명령어
+- HTTP, HTTPS, SSL에 대하여, HTTPS 서버 구축하기
+  * AWS ELB와 AWS CM을 이용한 HTTPS 서버 구축
+  * AWS S3 정적호스팅과 AWS CloudFront를 이용한 HTTPS 서버 구축
 - 서버 - 클라이언트 통신 방식.
-- 데브옵스란, 준비 방법.
-- RDB, NoSQL
-- TCP/IP
+- DNS가 돌아가는 방식.
 
-## _2019 여름방학에 할 토픽_
+## _2019 여름방학에 공부한 주제_
 
 * Django를 통한 Backend 
   * Django를 통해 전반적으로 Web이 돌아가는 방식을 알게됨.
